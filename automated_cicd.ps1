@@ -1,12 +1,13 @@
-# SCRIPT CREATE DATE: 2024.01.04
+# SCRIPT VERSION: 1.1
+# SCRIPT UPDATED DATE: 2024.02.26
+# SCRIPT CREATED DATE: 2024.01.04
 # SCRIPT CREATED BY: Majed Charafeddine -- charawex
-# SCRIPT VERSION: 1
 #
 # SCRIPT GOAL: 
-#   To antecipate the impacts of the development on CICD pipelines.
+#   To automate the process of simulating the impacts of the development on CICD pipelines
 #
-# HOW SCRIPT WORKS: 
-#   1. Prompts users for information
+# HOW IT WORKS: 
+#   1. Prompts user for information
 #   2. Checks the provided information within the local environment
 #   3. Changes directory to the path provided
 #   4. Activates the virtual environment <venvrdm>
@@ -14,26 +15,28 @@
 #   6. That's it!
 #
 # HOW TO USE:
-#   1. Save the main script locally
+#   1. Save the reference script locally
 #   2. Save this script locally
-#   3. Double click on this file script
+#   3. Double click on this file script to run it
 #   4. Follow prompts
 #   5. That's it, enjoy!
 #
-# INPUTS
+# INPUTS:
 #   1. Script path
-#   2. Script file name
+#   2. Script filename
 #   3. Project name
 #
-# OUTPUTS
-#   None
+# OUTPUTS:
+#   Depends on the selected options on the reference script; it can output:
+#   1. Impact report
+#   2. dbt execution logs
 #
-# EXECUTION EXAMPLE
+# EXECUTION EXAMPLE:
 #   PS C:\> EmbeddedScript3
 #   Starting script...
-#   What is the path where the script is stored? (Press Enter for default :: 'D:\Users\'$'User\Documents\')
-#   What is the script file name? (Press Enter for default :: <venvsetup.ps1>)
-#   What is the project name? (Press Enter for default :: <ps-ds-lakefront-us>)
+#   What is the path where the script is located?
+#   What is the script filename?
+#   What is the project name?
 #   Changed directory to D:\Users\username\Documents\GitHub\ps-ds-lakefront-us
 #   The script has been found.
 #   <venvrdm> activated
@@ -44,24 +47,18 @@
 function EmbeddedScript3 {
     # Start of the embedded script
     Write-Host "Starting script..." -ForegroundColor Gray
+
+    # Load the required assembly
+    [void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
     
     # Prompt the user for the script path
-    $choosenScriptPath = Read-Host "What is the path where the script is stored? (Press Enter for default :: 'D:\Users\'$'User\Documents\Scripts\')"
-    if ([string]::IsNullOrWhiteSpace($choosenScriptPath)) {
-        $ChoosenScriptPath = "D:\Users\$env:UserName\Documents\Scripts\"  # Default script path
-    }
+    $choosenScriptPath = [Microsoft.VisualBasic.Interaction]::InputBox("What is the path where the script is located?","Script path","D:\Users\$env:UserName\Documents\Scripts\")
     
-    # Prompt the user for the script file name
-    $choosenScriptFileName = Read-Host "What is the script file name? (Press Enter for default :: <cicd_impact.ps1>)"
-    if ([string]::IsNullOrWhiteSpace($choosenScriptFileName)) {
-        $ChoosenScriptFileName = "cicd_impact.ps1"  # Default script filename
-    }
+    # Prompt the user for the script filename
+    $choosenScriptFileName = [Microsoft.VisualBasic.Interaction]::InputBox("What is the script filename?","Script filename","cicd_impact.ps1")
     
     # Prompt the user for the project name
-    $choosenProject = Read-Host "What is the project name? (Press Enter for default :: <ps-ds-lakefront-us>)"
-    if ([string]::IsNullOrWhiteSpace($choosenProject)) {
-        $choosenProject = "ps-ds-lakefront-us"  # Default project name
-    }
+    $choosenProject = [Microsoft.VisualBasic.Interaction]::InputBox("What is the project name?","Project name","ps-ds-lakefront-us")
     
     # Set the script path
     $choosenProjectPath = "D:\Users\$env:UserName\Documents\GitHub\$choosenProject"
@@ -101,15 +98,15 @@ function EmbeddedScript3 {
     Write-Host "Completed" -ForegroundColor Black -BackgroundColor Green
     
     # End of the embedded script
-    }
-    # End of the function
+}
+# End of the function
     
-    # Executes the function in a new PowerShell process (window)
-    Start-Process powershell -args "-noprofile", "-noexit", "-EncodedCommand",
-    ([Convert]::ToBase64String(
-        [Text.Encoding]::Unicode.GetBytes(
-        (Get-Command -Type Function EmbeddedScript3).Definition
-        )
-    ))
+# Executes the function in a new PowerShell process (window)
+Start-Process powershell -args "-noprofile", "-noexit", "-EncodedCommand",
+([Convert]::ToBase64String(
+    [Text.Encoding]::Unicode.GetBytes(
+    (Get-Command -Type Function EmbeddedScript3).Definition
+    )
+))
     
-    # End of file
+# End of file

@@ -1,13 +1,13 @@
-# SCRIPT CREATE DATE: 2023.11.06
-# SCRIPT UPDATE DATE: 2024.01.04
+# SCRIPT VERSION: 2.1
+# SCRIPT UPDATED DATE: 2024.02.26
+# SCRIPT CREATED DATE: 2023.11.06
 # SCRIPT CREATED BY: Majed Charafeddine -- charawex
-# SCRIPT VERSION: 2.0
 #
 # SCRIPT GOAL: 
-#   To standardize and automate the administrative process of setting up the virtual development environment
+#   To automate the process of setting up the virtual development environment
 #
 # HOW IT WORKS: 
-#   1. Prompts users for information
+#   1. Prompts user for information
 #   2. Checks the provided information within the local environment
 #   3. Changes directory to the path provided
 #   4. Activates the virtual environment <venvrdm>
@@ -15,27 +15,27 @@
 #   6. That's it!
 #
 # HOW TO USE:
-#   1. Save the main script locally
+#   1. Save the reference script locally
 #   2. Save this script locally
-#   3. Double click on this file script
+#   3. Double click on this script file to run it
 #   4. Follow prompts
 #   5. That's it, enjoy!
 #
-# INPUTS
+# INPUTS:
 #   1. Script path
-#   2. Script file name
+#   2. Script filename
 #   3. Project name
 #
-# OUTPUTS
+# OUTPUTS:
 #   None
 #
-# EXECUTION EXAMPLE
+# EXECUTION EXAMPLE:
 #   PS C:\> EmbeddedScript2
 #   Starting script...
-#   What is the path where the script is stored? (Press Enter for default :: 'D:\Users\'$'User\Documents\')
-#   What is the script file name? (Press Enter for default :: <venvsetup.ps1>)
-#   What is the project name? (Press Enter for default :: <ps-ds-lakefront-us>)
-#   Changed directory to D:\Users\username\Documents\GitHub\ps-ds-lakefront-us
+#   What is the path where the script is located?
+#   What is the script filename?
+#   What is the project name?
+#   Changed directory to D:\Users\<username>\Documents\GitHub\<project>
 #   The script has been found.
 #   <venvrdm> activated
 #   ** runs the script with its prompts, inputs and outputs **
@@ -43,65 +43,59 @@
 
 
 function EmbeddedScript2 {
-# Start of the embedded script
-Write-Host "Starting script..." -ForegroundColor Gray
+    # Start of the embedded script
+    Write-Host "Starting script..." -ForegroundColor Gray
 
-# Prompt the user for the script path
-$choosenScriptPath = Read-Host "What is the path where the script is stored? (Press Enter for default :: 'D:\Users\'$'User\Documents\Scripts\')"
-if ([string]::IsNullOrWhiteSpace($choosenScriptPath)) {
-    $ChoosenScriptPath = "D:\Users\$env:UserName\Documents\Scripts\"  # Default script path
-}
+    # Load the required assembly
+    [void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
 
-# Prompt the user for the script file name
-$choosenScriptFileName = Read-Host "What is the script file name? (Press Enter for default :: <venvsetup.ps1>)"
-if ([string]::IsNullOrWhiteSpace($choosenScriptFileName)) {
-    $ChoosenScriptFileName = "venvsetup.ps1"  # Default script filename
-}
+    # Prompt the user for the script path
+    $choosenScriptPath = [Microsoft.VisualBasic.Interaction]::InputBox("What is the path where the script is located?","Script path","D:\Users\$env:UserName\Documents\Scripts\")
 
-# Prompt the user for the project name
-$choosenProject = Read-Host "What is the project name? (Press Enter for default :: <ps-ds-lakefront-us>)"
-if ([string]::IsNullOrWhiteSpace($choosenProject)) {
-    $choosenProject = "ps-ds-lakefront-us"  # Default project name
-}
+    # Prompt the user for the script filename
+    $choosenScriptFileName = [Microsoft.VisualBasic.Interaction]::InputBox("What is the script filename?","Script filename","venvsetup.ps1")
 
-# Set the script path
-$choosenProjectPath = "D:\Users\$env:UserName\Documents\GitHub\$choosenProject"
+    # Prompt the user for the project name
+    $choosenProject = [Microsoft.VisualBasic.Interaction]::InputBox("What is the project name?","Project name","ps-ds-lakefront-us")
 
-# Check if the project path exists
-if (Test-Path $choosenProjectPath) {
-    Set-Location -Path $choosenProjectPath
-    Write-Host "Changed directory to $choosenProjectPath" -ForegroundColor DarkGreen
-} else {
-    Write-Host "The project directory $choosenProjectPath does not exist!" -ForegroundColor White -BackgroundColor Red
-    return
-}
+    # Set the script path
+    $choosenProjectPath = "D:\Users\$env:UserName\Documents\GitHub\$choosenProject"
 
-$scriptPath = $ChoosenScriptPath + $ChoosenScriptFileName
+    # Check if the project path exists
+    if (Test-Path $choosenProjectPath) {
+        Set-Location -Path $choosenProjectPath
+        Write-Host "Changed directory to $choosenProjectPath" -ForegroundColor DarkGreen
+    } else {
+        Write-Host "The project directory $choosenProjectPath does not exist!" -ForegroundColor White -BackgroundColor Red
+        return
+    }
 
-# Check if the script path exists
-if (Test-Path $scriptPath -PathType Leaf) {
-    Write-Host "The script has been found." -ForegroundColor DarkGreen
-} else {
-    Write-Host "The script $ScriptPath does not exist!" -ForegroundColor White -BackgroundColor Red
-    return
-}
+    $scriptPath = $ChoosenScriptPath + $ChoosenScriptFileName
 
-# Activate the virtual environment
-$venvPath = "D:\.venvrdm\scripts\activate.ps1"
-if (Test-Path $venvPath) {
-    & $venvPath
-    Write-Host "<venvrdm> activated" -ForegroundColor Green
-} else {
-    Write-Host "The virtual environment script $venvPath does not exist!" -ForegroundColor White -BackgroundColor Red
-    return
-}
+    # Check if the script path exists
+    if (Test-Path $scriptPath -PathType Leaf) {
+        Write-Host "The script has been found." -ForegroundColor DarkGreen
+    } else {
+        Write-Host "The script $ScriptPath does not exist!" -ForegroundColor White -BackgroundColor Red
+        return
+    }
 
-& $scriptPath
+    # Activate the virtual environment
+    $venvPath = "D:\.venvrdm\scripts\activate.ps1"
+    if (Test-Path $venvPath) {
+        & $venvPath
+        Write-Host "<venvrdm> activated" -ForegroundColor Green
+    } else {
+        Write-Host "The virtual environment script $venvPath does not exist!" -ForegroundColor White -BackgroundColor Red
+        return
+    }
 
-# Tells the user that the script is done
-Write-Host "Completed" -ForegroundColor Black -BackgroundColor Green
+    & $scriptPath
 
-# End of the embedded script
+    # Tells the user that the script is done
+    Write-Host "Completed" -ForegroundColor Black -BackgroundColor Green
+
+    # End of the embedded script
 }
 # End of the function
 
@@ -113,4 +107,4 @@ Start-Process powershell -args "-noprofile", "-noexit", "-EncodedCommand",
     )
 ))
 
-# End of file
+# End of file                                                                                       

@@ -1,12 +1,12 @@
-# SCRIPT CREATE DATE: 2023.10.19
-# SCRIPT UPDATE DATE: 2024.01.04
+# SCRIPT VERSION: 2.2
+# SCRIPT UPDATED DATE: 2024.02.26
+# SCRIPT CREATED DATE: 2023.10.19
 # SCRIPT CREATED BY: Majed Charafeddine -- charawex
-# SCRIPT VERSION: 2.1
 #
 # SCRIPT GOAL: 
-#   To standardize and automate the administrative process of activating the virtual development environment.
+#   To automate the process of activating the virtual development environment
 #
-# HOW SCRIPT WORKS: 
+# HOW IT WORKS: 
 #   1. Prompts users for information
 #   2. Checks the path provided within the local environment
 #   3. Changes directory to the path provided
@@ -19,16 +19,16 @@
 #   3. Follow prompts
 #   4. That's it, enjoy!
 #
-# INPUTS
+# INPUTS:
 #   1. project name
 #
-# OUTPUTS
+# OUTPUTS:
 #   None
 #
-# EXECUTION EXAMPLE
+# EXECUTION EXAMPLE:
 #   PS C:\> .\Untitled-1.ps1
 #   Starting script...
-#   What is the repo name? (Press Enter for default :: <ps-ds-lakefront-us>): my-repo
+#   What is the repo's name? (Press Enter for default :: <ps-ds-lakefront-us>): my-repo
 #   Changed directory to D:\Users\username\Documents\GitHub\my-repo
 #   <venvrdm> activated
 #   Done
@@ -37,12 +37,12 @@
 function EmbeddedScript {
     # Start of the embedded script
     Write-Host "Starting script..." -ForegroundColor Gray
+
+    # Load the required assembly
+    [void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') 
     
     # Prompt the user for the desired project name
-    $desiredProject = Read-Host "What is the repo name? (Press Enter for default :: <ps-ds-lakefront-us>)"
-    if ([string]::IsNullOrWhiteSpace($desiredProject)) {
-        $desiredProject = "ps-ds-lakefront-us"  # Default project name
-    }
+    $desiredProject = [Microsoft.VisualBasic.Interaction]::InputBox("What is the repo's name?","Repository name","ps-ds-lakefront-us")
 
     # Set the desired path
     $desiredPath = "D:\Users\$env:UserName\Documents\GitHub\$desiredProject"
