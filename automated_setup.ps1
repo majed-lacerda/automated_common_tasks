@@ -1,0 +1,2 @@
+#Automated start of the environment setup script, MK I (2023-11-06) [Powershell edition / .ps1 extension]
+Start-Process powershell -ArgumentList "-noexit", "write-host 'Starting script...' -Foregroundcolor gray; cd D:\Users\$env:UserName\Documents\GitHub\ps-ds-lakefront-us; D:\.venvrdm\scripts\activate.ps1; write-host '<venvrdm> activated.' -Foregroundcolor darkgreen; write-host 'Starting automated environment setup' -Foregroundcolor darkred; D:\Users\$env:UserName\Documents\envsetup.ps1"
