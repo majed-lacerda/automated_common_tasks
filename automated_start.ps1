@@ -1,26 +1,38 @@
 # SCRIPT CREATE DATE: 2023.10.19
-# SCRIPT UPDATE DATE: 2023.12.28
+# SCRIPT UPDATE DATE: 2024.01.04
 # SCRIPT CREATED BY: Majed Charafeddine -- charawex
-# SCRIPT VERSION: 2.0
+# SCRIPT VERSION: 2.1
 #
 # SCRIPT GOAL: 
-#  To standardize and automate the administrative process of activating the virtual development environment.
+#   To standardize and automate the administrative process of activating the virtual development environment.
 #
 # HOW SCRIPT WORKS: 
-#  1. Prompts users for information
-#  2. Checks the path provided within the local environment
-#  3. Changes directory to the path provided
-#  4. Activates the virtual environment <venvrdm>
-#  5. Prompts users if they want to run the <dbt deps> command
-#  6. Runs the <dbt deps> command if the user chooses to do so
-#  7. That's it!
+#   1. Prompts users for information
+#   2. Checks the path provided within the local environment
+#   3. Changes directory to the path provided
+#   4. Activates the virtual environment <venvrdm>
+#   5. That's it!
 #
 # HOW TO USE:
-#  1. Save script locally
-#  2. Double click on the file
-#  3. Follow prompts
-#  4. That's it, enjoy!
-
+#   1. Save script locally
+#   2. Double click on the file
+#   3. Follow prompts
+#   4. That's it, enjoy!
+#
+# INPUTS
+#   1. project name
+#
+# OUTPUTS
+#   None
+#
+# EXECUTION EXAMPLE
+#   PS C:\> .\Untitled-1.ps1
+#   Starting script...
+#   What is the repo name? (Press Enter for default :: <ps-ds-lakefront-us>): my-repo
+#   Changed directory to D:\Users\username\Documents\GitHub\my-repo
+#   <venvrdm> activated
+#   Done
+    
 # Define the function that contains the embedded script
 function EmbeddedScript {
     # Start of the embedded script
@@ -52,16 +64,6 @@ function EmbeddedScript {
     } else {
         Write-Host "The virtual environment script $venvPath does not exist!" -ForegroundColor White -BackgroundColor Red
         return
-    }
-
-    # Prompt the user to run the "dbt deps" command
-    $userInput = Read-Host "Do you want to run the <dbt deps> command? (yes/no)"
-    if ($userInput -eq "yes") {
-        # Run the "dbt deps" command
-        Write-Host "Running <dbt deps>..." -ForegroundColor Yellow
-        dbt deps | Out-Null
-    } else {
-        Write-Host "<dbt deps> skipped" -ForegroundColor Gray
     }
 
     # Tells the user that the script is done
